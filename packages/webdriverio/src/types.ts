@@ -500,6 +500,9 @@ type MockProperties = Pick<DevtoolsInterception, 'calls'>
 export interface Mock extends MockFunctions, MockProperties {}
 
 export interface AttachOptions extends Omit<WebDriverAttachOptions, 'capabilities'> {
+    // Properties were added here as temp solution. Will be refactored in the future
+    automationProtocol: any
+    _automationProtocol: any
     options: Options.WebdriverIO
     capabilities: WebDriverAttachOptions['capabilities'],
     requestedCapabilities?: WebDriverAttachOptions['capabilities'],

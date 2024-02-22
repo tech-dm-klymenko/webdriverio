@@ -10,7 +10,7 @@ import MultiRemote from './multiremote.js'
 import SevereServiceErrorImport from './utils/SevereServiceError.js'
 import detectBackend from './utils/detectBackend.js'
 import { getProtocolDriver } from './utils/driver.js'
-import { WDIO_DEFAULTS, SupportedAutomationProtocols, Key as KeyConstant } from './constants.js'
+import { WDIO_DEFAULTS, Key as KeyConstant } from './constants.js'
 import { getPrototype, addLocatorStrategyHandler, isStub } from './utils/index.js'
 import type { AttachOptions, RemoteOptions } from './types.js'
 import type * as elementCommands from './commands/element.js'
@@ -81,8 +81,10 @@ export const attach = async function (attachOptions: AttachOptions): Promise<Web
     /**
      * copy instances properties into new object
      */
+    // We come here only when session was created earlier, so we have already automation protocol as part of attachOptions.
+    // So we should not add automation protocol again
     const params = {
-        automationProtocol: SupportedAutomationProtocols.webdriver,
+        // automationProtocol: SupportedAutomationProtocols.webdriver,
         ...attachOptions,
         ...detectBackend(attachOptions.options),
         requestedCapabilities: attachOptions.requestedCapabilities

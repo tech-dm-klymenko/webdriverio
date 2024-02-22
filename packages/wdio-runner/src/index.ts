@@ -82,12 +82,21 @@ export default class Runner extends EventEmitter {
         /**
          * create `browser` stub only if `specFiltering` feature is enabled
          */
-        let browser = await this._startSession({
-            ...this._config,
-            // @ts-ignore used in `/packages/webdriverio/src/protocol-stub.ts`
-            _automationProtocol: this._config.automationProtocol,
-            automationProtocol: './protocol-stub.js'
-        }, caps)
+        // When first launched, the config does not yet have property 'automationProtocol'.
+        // And when we run it again during --watch, we take the value of the current property 'automationProtocol'
+        let browser = Object.keys(this._config).includes('automationProtocol') ?
+            await this._startSession({
+                ...this._config,
+                // @ts-ignore used in `/packages/webdriverio/src/protocol-stub.ts`
+                _automationProtocol: this._config.automationProtocol,
+                automationProtocol: this._config.automationProtocol
+            }, caps) :
+            await this._startSession({
+                ...this._config,
+                // @ts-ignore used in `/packages/webdriverio/src/protocol-stub.ts`
+                _automationProtocol: this._config.automationProtocol,
+                automationProtocol: './protocol-stub.js'
+            }, caps)
 
         /**
          * run `beforeSession` command before framework and browser are initiated
