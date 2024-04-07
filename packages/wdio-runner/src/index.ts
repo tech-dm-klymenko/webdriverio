@@ -202,6 +202,9 @@ export default class Runner extends EventEmitter {
          */
         if (!args.watch) {
             await this.endSession()
+        } else {
+            // send 'browser' object details to parent process to keep its data for futher usage in watch-mode
+            process.send!({ name: 'keepBrowserObj', _browser: browser })
         }
 
         /**

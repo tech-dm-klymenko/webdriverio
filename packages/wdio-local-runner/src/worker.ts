@@ -64,6 +64,7 @@ export default class WorkerInstance extends EventEmitter implements Workers.Work
     isSetup: Promise<boolean>
     isReadyResolver: (value: boolean | PromiseLike<boolean>) => void = () => {}
     isSetupResolver: (value: boolean | PromiseLike<boolean>) => void = () => {}
+    _browser: Object // keep browser object from child procees in --watch mode
 
     /**
      * assigns paramters to scope of instance
@@ -95,6 +96,8 @@ export default class WorkerInstance extends EventEmitter implements Workers.Work
 
         this.isReady = new Promise((resolve) => { this.isReadyResolver = resolve })
         this.isSetup = new Promise((resolve) => { this.isSetupResolver = resolve })
+        this._browser = {}
+
     }
 
     /**
@@ -170,6 +173,12 @@ export default class WorkerInstance extends EventEmitter implements Workers.Work
 
     private _handleMessage (payload: Workers.WorkerMessage) {
         const { cid, childProcess } = this
+
+        console.log(11, payload.name)
+        if (payload.name === 'keepBrowserObj') {
+            this._browser = payload._browser
+            console.log(23, payload._browser)
+        }
 
         /**
          * resolve pending commands

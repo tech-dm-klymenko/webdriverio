@@ -52,6 +52,7 @@ export interface WorkerMessage {
     }
     origin: string
     params: Record<string, string>
+    _browser: Object
 }
 
 export interface Worker
