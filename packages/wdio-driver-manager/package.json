@@ -1,9 +1,9 @@
 {
-  "name": "@wdio/browser-runner",
+  "name": "@wdio/driver-manager",
   "version": "9.0.9",
-  "description": "A WebdriverIO runner to run unit tests tests in the browser.",
-  "author": "Christian Bromann <mail@bromann.dev>",
-  "homepage": "https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-browser-runner",
+  "description": "Driver manager to coordinate multiple instances in parallel and watch mode",
+  "author": "Dmytro Klymenko <dklymenko.work@gmail.com>",
+  "homepage": "https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-driver-manager",
   "license": "MIT",
   "engines": {
     "node": ">=18.20.0"
@@ -11,13 +11,14 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webdriverio/webdriverio.git",
-    "directory": "packages/wdio-browser-runner"
+    "directory": "packages/wdio-driver-manager"
   },
   "keywords": [
     "webdriver",
-    "webdriverio",
     "wdio",
-    "wdio-runner"
+    "driver",
+    "driver-manager",
+    "webdriver-manager"
   ],
   "bugs": {
     "url": "https://github.com/webdriverio/webdriverio/issues"
@@ -29,35 +30,10 @@
       "types": "./build/index.d.ts",
       "import": "./build/index.js"
     },
-    "./stencil": {
-      "importSource": "./src/browser/integrations/stencil.ts",
-      "import": "./build/browser/integrations/stencil.js",
-      "types": "./build/browser/integrations/stencil.d.ts"
-    },
     "./driver": {
       "browserSource": "./src/browser/driver.ts",
       "browser": "./build/browser/driver.js",
       "types": "./build/browser/driver.d.ts"
-    },
-    "./mock": {
-      "browserSource": "./src/browser/mock.ts",
-      "browser": "./build/browser/mock.js",
-      "types": "./build/browser/mock.d.ts"
-    },
-    "./setup": {
-      "browserSource": "./src/browser/setup.ts",
-      "browser": "./build/browser/setup.js",
-      "types": "./build/browser/setup.d.ts"
-    },
-    "./spy": {
-      "browserSource": "./src/browser/spy.ts",
-      "browser": "./build/browser/spy.js",
-      "types": "./build/browser/spy.d.ts"
-    },
-    "./expect": {
-      "browserSource": "./src/browser/expect.ts",
-      "browser": "./build/browser/expect.js",
-      "types": "./build/browser/expect.d.ts"
     }
   },
   "typeScriptVersion": "3.8.3",
