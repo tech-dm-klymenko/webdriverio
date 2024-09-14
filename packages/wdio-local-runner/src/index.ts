@@ -4,6 +4,7 @@ import type { Options, Workers } from '@wdio/types'
 
 import WorkerInstance from './worker.js'
 import { SHUTDOWN_TIMEOUT, BUFFER_OPTIONS } from './constants.js'
+import DriverManager from '@wdio/driver-manager'
 
 const log = logger('@wdio/local-runner')
 
@@ -16,6 +17,8 @@ export interface RunArgs extends Workers.WorkerRunPayload {
 
 export default class LocalRunner {
     workerPool: Record<string, WorkerInstance> = {}
+
+    driverManager: DriverManager = new DriverManager()
 
     stdout = new WritableStreamBuffer(BUFFER_OPTIONS)
     stderr = new WritableStreamBuffer(BUFFER_OPTIONS)
@@ -44,6 +47,7 @@ export default class LocalRunner {
             process.stderr.setMaxListeners(workerCnt + 2)
         }
 
+        // moving the process of creating a worker to the driver manager
         const worker = new WorkerInstance(this._config, workerOptions, this.stdout, this.stderr)
         this.workerPool[workerOptions.cid] = worker
         worker.postMessage(command, args)
