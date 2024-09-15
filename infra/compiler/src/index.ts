@@ -98,7 +98,7 @@ const configs = packages.map(([packageDir, pkg]) => {
         const absWorkingDir = path.resolve(rootDir, 'packages', packageDir)
         const source = (exp.source as string | undefined) || './src/index.ts'
         const baseConfig: BuildOptions = {
-            sourceRoot: absWorkingDir,
+            // sourceRoot: absWorkingDir, // disabled to prevent issues with source maps during local debugging.
             tsconfig: path.resolve(absWorkingDir, 'tsconfig.json'),
             sourcemap: process.env.NODE_ENV !== 'production' ? 'inline' : false,
             external: getExternal(pkg),
