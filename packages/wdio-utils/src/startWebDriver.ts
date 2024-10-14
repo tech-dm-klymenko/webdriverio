@@ -4,7 +4,7 @@ import type { Capabilities } from '@wdio/types'
 import { definesRemoteDriver } from './utils.js'
 
 const log = logger('@wdio/utils')
-
+// TODO-my: need to remove code in Utils because it was moved to driver-manager
 export async function startWebDriver (options: Capabilities.RemoteConfig) {
     /**
      * if any of the connection parameter are set, don't start any driver
