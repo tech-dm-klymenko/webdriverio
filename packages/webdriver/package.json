@@ -38,9 +38,11 @@
     "@wdio/config": "workspace:*",
     "@wdio/logger": "workspace:*",
     "@wdio/protocols": "workspace:*",
+    "@wdio/driver-manager": "workspace:*",
     "@wdio/types": "workspace:*",
     "@wdio/utils": "workspace:*",
     "deepmerge-ts": "^7.0.3",
+    "uuid": "^10.0.0",
     "ws": "^8.8.0"
   }
 }
