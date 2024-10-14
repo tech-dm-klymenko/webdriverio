@@ -1,4 +1,6 @@
 import type { ChildProcess } from 'node:child_process'
+import { v4 as uuidv4 } from 'uuid'
+import { DriverManagerClient } from '@wdio/driver-manager'
 
 import logger from '@wdio/logger'
 
@@ -29,7 +31,31 @@ export default class WebDriver {
         }
 
         log.info('Initiate new session using the WebDriver protocol')
-        const driverProcess = await startWebDriver(params)
+        // TODO-my: here we need get only process-id fron child process with driver binary. The rest we have already got from capabilities
+        /**
+         * тут нужно использовать инстанс драйвер менеджера, котоырй будет создавать внутри себя процесс для бинарника драйвера
+         * и при этом будет возвращать id процесса
+         */
+        const workerUuid = uuidv4()
+        const driverBinaryManager = new DriverManagerClient()
+
+        // !!! Old Code - use it as working version to run code
+        // const driverProcess = await startWebDriver(params)
+
+        //
+        //
+        //
+        //
+        // new code - refactored
+        // TODO-my: проверить рабту кода с текущей конфигурацией и потом с мок-сервисом, чтобы проверить разные цепочки кода
+        await driverBinaryManager.startProcess(workerUuid, params)
+        const driverProcessId = driverBinaryManager.getProcessId(workerUuid)
+        //
+        //
+        //
+        //
+        //
+
         const requestedCapabilities = { ...params.capabilities }
         const { sessionId, capabilities } = await startWebDriverSession(params)
         const environment = sessionEnvironmentDetector({ capabilities, requestedCapabilities })
@@ -40,8 +66,8 @@ export default class WebDriver {
          * attach driver process to instance capabilities so we can kill the driver process
          * even after attaching to this session
          */
-        if (driverProcess?.pid) {
-            capabilities['wdio:driverPID'] = driverProcess.pid
+        if (driverProcessId) {
+            capabilities['wdio:driverPID'] = driverProcessId
         }
 
         /**
@@ -163,10 +189,12 @@ export default class WebDriver {
          * if we have been running a local session before, delete connection details
          * in order to start a new session on a potential new driver
          */
+        // TODO-my: fix reloadSession when nerwSession() is ready (as second step)
         let driverProcess: ChildProcess | undefined
         if (params.hostname === 'localhost' && newCapabilities?.browserName) {
             delete params.port
             delete params.hostname
+            // TODO-my: here also need to use driver-manager to vreate binary driver process
             driverProcess = await startWebDriver(params)
         }
 
